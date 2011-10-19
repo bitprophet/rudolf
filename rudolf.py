@@ -451,14 +451,31 @@ Got:
             self._stream.write(self.colorize("failure", "F"))
 
     def print_error_list(self, flavour, errors):
-        problem_color = (flavour == "FAIL") and "failure" or "error"
-        for test, err, err_type in errors:
+        problem_color = {
+            "FAIL": "failure",
+            "SKIP": "skip"
+        }.get(flavour, "error")
+        for tup in errors:
+            test, err = tup[:2]
+            try:
+                err_type = tup[2]
+            except IndexError:
+                err_type = None
+            # Handle skip message
+            skip_msg = ""
+            if flavour == "SKIP":
+                reason = getattr(err, "message", None)
+                if reason:
+                    skip_msg = " (%s)" % self.colorize("skip", reason)
             self._stream.writeln(self.separator1)
-            self._stream.writeln("%s: %s" % (
+            self._stream.writeln("%s: %s%s" % (
                     self.colorize(problem_color, flavour),
-                    self.colorize("testname", self.get_description(test))))
-            self._stream.writeln(self.separator2)
-            self.print_traceback(err, err_type)
+                    self.colorize("testname", self.get_description(test)),
+                    skip_msg
+            ))
+            if flavour != "SKIP":
+                self._stream.writeln(self.separator2)
+                self.print_traceback(err, err_type)
 
     def print_summary(self, success, summary, tests_run, start, stop):
         write = self._stream.write
@@ -703,7 +720,8 @@ class ColorOutputPlugin(nose.plugins.Plugin):
                            "actual-output": "red",
                            "character-diffs": "magenta",
                            "diff-chunk": "magenta",
-                           "exception": "red"}
+                           "exception": "red",
+                           "skip": "yellow"}
     default_colorscheme = dict((name, parse_color(color)) for name, color in
                                default_colorscheme.iteritems())
 
