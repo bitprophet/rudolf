@@ -1,0 +1,23 @@
+Metadata-Version: 1.0
+Name: rudolf
+Version: 0.3
+Summary: Colour output plugin for the nose testing framework
+Home-page: http://pypi.python.org/pypi/rudolf/
+Author: John J. Lee
+Author-email: jjl@pobox.com
+License: ZPL 2.1
+Download-URL: http://pypi.python.org/pypi/rudolf/
+Description: Colour output plugin for the nose testing framework.
+        
+        Only works on Unix-like systems (uses ANSI colour codes).
+        
+        Use ``nosetests --with-color`` (no "u"!) to turn it on.
+        
+        http://en.wikipedia.org/wiki/Rudolph_the_Red-Nosed_Reindeer
+        
+        "Rudolph the Red-Nosed Reindeer" is a popular Christmas story about Santa
+        Claus' ninth and lead reindeer who possesses an unusually red colored nose that
+        gives off its own light that is powerful enough to illuminate the team's path
+        through inclement weather.
+        
+Platform: POSIX

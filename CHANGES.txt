@@ -1,0 +1,29 @@
+-*- fill-column: 74 -*-
+
+This isn't really in proper GNU ChangeLog format, it just happens to
+look that way.
+
+2007-12-22 John J Lee <jjl@pobox.com>
+	* 0.3 release
+	* Fix test timing output
+	* Be more compatible with other plugins, by setting result.stream
+	  instead of returning from .setOutputStream() (thanks Jason
+	  Pellerin for suggesting how to fix this)
+	* Support 256 colour terminals
+	* Add --colors option to configure colours (can be used in config
+	  files or environment too, as usual)
+	* Change back to green expected, red actual in diff output.  Also
+	  colorize the "-expected +actual" text to make it clearer.
+	* Other minor stuff
+
+2007-11-17 John J Lee <jjl@pobox.com>
+	* 0.2a release
+	* Change doctest diff colours (swap red / green so red is used for
+          removed lines, green for added lines).
+	* Fix some easy_install stuff.
+	* Refactoring.
+
+2007-10-21 John J Lee <jjl@pobox.com>
+	* 0.1a release (first release)
+	* Copied colour output code from zope.testing 3.5.0 file
+	  testrunner.py, and modified it heavily to work with nose.
