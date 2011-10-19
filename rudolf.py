@@ -797,7 +797,13 @@ class ColorOutputPlugin(nose.plugins.Plugin):
         result.__errors = []
         result.__tests_run = 0
         result.__start_time = time.time()
-        result.stream = unittest._WritelnDecorator(open(os.devnull, 'w'))
+        # Python <= 2.6 has _WritelnDecorator at top level
+        try:
+            writeln_decorator = unittest._WritelnDecorator
+        # Python >= 2.7 has it in the runner module
+        except AttributeError:
+            writeln_decorator = unittest.runner._WritelnDecorator
+        result.stream = writeln_decorator(open(os.devnull, 'w'))
         self._result = result
 
     def startTest(self, test):
