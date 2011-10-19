@@ -444,6 +444,12 @@ Got:
         elif self._dots:
             self._stream.write(self.colorize("error", label[:1]))
 
+    def test_skip(self, label):
+        if self._show_all:
+            self._stream.writeln(self.colorize("skip", label))
+        elif self._dots:
+            self._stream.write(self.colorize("skip", label[:1]))
+
     def test_failure(self, test, exc_info):
         if self._show_all:
             self._stream.writeln(self.colorize("failure", "FAIL"))
@@ -821,7 +827,19 @@ class ColorOutputPlugin(nose.plugins.Plugin):
         # Python >= 2.7 has it in the runner module
         except AttributeError:
             writeln_decorator = unittest.runner._WritelnDecorator
+        # This neuters any default or plugin defined output streams,
+        # effectively forcing all output through Rudolf.
         result.stream = writeln_decorator(open(os.devnull, 'w'))
+        # So we need to monkeypatch core addSkip, which appears to be the only
+        # code called on skips (our own addSkip, if defined, is ignored.)
+        # Gross, but works.
+        old_addSkip = result.addSkip
+        def new_addSkip(test, reason):
+            old_addSkip(test, reason)
+            label = result.errorClasses[nose.plugins.skip.SkipTest][1]
+            self._formatter.test_skip(label)
+        result.addSkip = new_addSkip
+
         self._result = result
 
     def startTest(self, test):
