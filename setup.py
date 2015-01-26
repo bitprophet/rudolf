@@ -13,7 +13,7 @@ setup(
     license = "ZPL 2.1",
     platforms = ["POSIX"],
 
-    install_requires = ["nose>=0.1.0, ==dev"],
+    install_requires = ["nose>=0.1.0"],
 
     url = "http://pypi.python.org/pypi/rudolf/",
 
